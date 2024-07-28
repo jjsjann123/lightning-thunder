@@ -782,16 +782,17 @@ often just instantly return an alias. For some complicated cases (typically when
 the metadata operation is awkward enough to force the output tensor to be
 instantiated) this heuristic actually leads to worse code.
 """
-            enable_bookend: None | bool = get_compile_option("nv_enable_bookend", bookend_help)
-            # Set default value.
-            if enable_bookend is None:
-                enable_bookend = True
-            assert isinstance(enable_bookend, bool)
+            #enable_bookend: None | bool = get_compile_option("nv_enable_bookend", bookend_help)
+            ## Set default value.
+            #if enable_bookend is None:
+            #    enable_bookend = True
+            #assert isinstance(enable_bookend, bool)
 
-            if enable_bookend:
-                bookend_result = group_bookend_meta_ops(producers, consumers, region)
-            else:
-                bookend_result = {"front_bsyms": [], "fusion": region, "rear_bsyms": []}
+            #if enable_bookend:
+            #    bookend_result = group_bookend_meta_ops(producers, consumers, region)
+            #else:
+            #    bookend_result = {"front_bsyms": [], "fusion": region, "rear_bsyms": []}
+            bookend_result = {"front_bsyms": [], "fusion": region, "rear_bsyms": []}
 
             if len(bsyms) == 1:
                 bsym: BoundSymbol = bsyms[0]
