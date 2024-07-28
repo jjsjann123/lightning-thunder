@@ -533,6 +533,7 @@ qkv_split_rope_executors_ids = (
     "config,",
     get_configs_for_qkv_split_rope(),
 )
+@pytest.mark.qkv_split_rope
 def test_litgpt_qkv_split_rope(
     benchmark, executor: Callable, use_apex: bool, bs: int, compute_type: ComputeType, config: str
 ):

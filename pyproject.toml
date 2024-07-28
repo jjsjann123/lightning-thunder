@@ -35,6 +35,7 @@ addopts = [
 ]
 markers = [
     "standalone: mark a test as standalone",
+    "qkv_split_rope",
 ]
 filterwarnings = [
     "error::FutureWarning",
