@@ -978,7 +978,7 @@ class NumberProxy(Proxy, NumberProxyInterface):
     def __bool__(self):
         if is_jitting():
             method = resolve_method("check_bool_conversion", self)
-            method(self, bool(self.value))
+            return method(self, bool(self.value))
         return bool(self.value)
 
     #
