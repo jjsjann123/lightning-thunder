@@ -1229,14 +1229,21 @@ def propagate_constraints(ctx, inputs, intermediates, computation_trace):
     # set of NumberProxy variables that has already been traversed and marked as statically constrained.
     static_np_set = set()
 
+    static_np_candidates = set()
+
     # add static constraints for inputs
     for inp in inputs:
         u_inp = unvariableify(inp)
-        if not isinstance(u_inp, NumberProxy):
-            continue
-        if u_inp.is_static_constrained():
-            ctx.add_constraint((clang.check_number_type_and_value, u_inp, u_inp.value))
-            static_np_set.add(inp)
+        if isinstance(u_inp, NumberProxy):
+            if u_inp.is_static_constrained():
+                ctx.add_constraint((clang.check_number_type_and_value, u_inp, u_inp.value))
+                static_np_set.add(inp)
+            else:
+                static_np_candidates.add(inp)
+        else isinstance(u_inp, TensorProxy):
+            for s in u_inp.shape:
+                if isinstance(s, NumberProxy) and not s.is_static_constrained():
+                    static_np_candidates.add(s)
 
     producers = utils.producers(computation_trace.bound_symbols, _map_to_numbers=False)
     # add static constraints propagated from intermediates.
@@ -1254,7 +1261,7 @@ def propagate_constraints(ctx, inputs, intermediates, computation_trace):
             static_np_set.add(v)
 
             uv = unvariableify(v)
-            if v in inputs:
+            if v in static_np_candidates:
                 ctx.add_constraint((clang.check_number_type_and_value, uv, uv.value))
             else:
                 producer = producers[uv]
