@@ -1240,10 +1240,10 @@ def propagate_constraints(ctx, inputs, intermediates, computation_trace):
                 static_np_set.add(inp)
             else:
                 static_np_candidates.add(inp)
-        else isinstance(u_inp, TensorProxy):
+        elif isinstance(u_inp, TensorProxy):
             for s in u_inp.shape:
                 if isinstance(s, NumberProxy) and not s.is_static_constrained():
-                    static_np_candidates.add(s)
+                    static_np_candidates.add(variableify(s))
 
     producers = utils.producers(computation_trace.bound_symbols, _map_to_numbers=False)
     # add static constraints propagated from intermediates.
